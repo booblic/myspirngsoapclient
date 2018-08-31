@@ -1,33 +1,32 @@
-package system;
+package com.terentev.work.system;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
-import service.SOAPConnector;
+import com.terentev.work.service.SoapService;
 
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
 
 @Configuration
-@ComponentScan(basePackages = {"controller", "service"})
-public class Config {
+public class ClientConfiguration {
 
     @Bean
     public Jaxb2Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setPackagesToScan("file");
+        marshaller.setPackagesToScan("com.terentev.work.file");
         marshaller.setMtomEnabled(true);
         return marshaller;
     }
 
     @Bean
-    public SOAPConnector soapConnector(Jaxb2Marshaller marshaller) {
-        SOAPConnector client = new SOAPConnector(getSaajSoapMessageFactory());
-        client.setMarshaller(marshaller);
-        client.setUnmarshaller(marshaller);
-        return client;
+    public SoapConnector soapConnector(Jaxb2Marshaller marshaller) {
+        SoapConnector soapConnector = new SoapConnector(getSaajSoapMessageFactory());
+        soapConnector.setMarshaller(marshaller);
+        soapConnector.setUnmarshaller(marshaller);
+        return soapConnector;
     }
 
     @Bean
